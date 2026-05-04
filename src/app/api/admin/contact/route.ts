@@ -12,11 +12,15 @@ export async function GET() {
   const unauthorized = await ensureAdmin();
   if (unauthorized) return unauthorized;
 
-  const data = await prisma.contactContent.findUnique({
-    where: { key: "main" },
-  });
-  console.log("data fetched after refresh", data);
-  return NextResponse.json(data ?? defaultPortfolioContent.contact);
+  try {
+    const data = await prisma.contactContent.findUnique({
+      where: { key: "main" },
+    });
+    console.log("data fetched after refresh", data);
+    return NextResponse.json(data ?? defaultPortfolioContent.contact);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }
 
 export async function PUT(request: Request) {

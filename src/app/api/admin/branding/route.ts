@@ -12,12 +12,16 @@ export async function GET() {
   const unauthorized = await ensureAdmin();
   if (unauthorized) return unauthorized;
 
-  const data = await prisma.brandingContent.findUnique({
-    where: { key: "main" },
-  });
-  console.log("data fetched after refresh", data);
+  try {
+    const data = await prisma.brandingContent.findUnique({
+      where: { key: "main" },
+    });
+    console.log("data fetched after refresh", data);
 
-  return NextResponse.json(data ?? defaultBrandingContent);
+    return NextResponse.json(data ?? defaultBrandingContent);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }
 
 export async function PUT(request: Request) {

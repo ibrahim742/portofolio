@@ -57,7 +57,7 @@ export function SingletonEditor({
     setLoading(true);
     try {
       const response = await fetch(endpoint, { cache: "no-store" });
-      const value = (await response.json()) as AdminData;
+      const value = await readJsonResponse<AdminData>(response);
       console.log("data fetched after refresh", value);
 
       if (!response.ok || value.error) {
@@ -178,11 +178,14 @@ export function SingletonEditor({
       method: "POST",
       cache: "no-store",
     });
+    const value = await readJsonResponse<{ ok?: boolean; error?: string }>(
+      response,
+    );
     console.log("api response", response);
     setSeeding(false);
 
-    if (!response.ok) {
-      setStatus("Gagal membuat data awal.");
+    if (!response.ok || value.error) {
+      setStatus(value.error || "Gagal membuat data awal.");
       return;
     }
 
@@ -219,12 +222,17 @@ export function SingletonEditor({
     console.log("api response", response);
 
     setSaving(false);
-    if (!response.ok) {
-      setStatus("Gagal menyimpan data. Pastikan semua field wajib terisi.");
+    const saved = await readJsonResponse<AdminData>(response);
+    if (!response.ok || saved.error) {
+      setStatus(
+        response.status === 401
+          ? "Session admin tidak valid atau sudah expired. Silakan login ulang."
+          : saved.error ||
+              "Gagal menyimpan data. Pastikan semua field wajib terisi.",
+      );
       return;
     }
 
-    const saved = (await response.json()) as AdminData;
     console.log("database result after update", saved);
     await loadData();
     setStatus(
