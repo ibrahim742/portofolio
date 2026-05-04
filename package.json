@@ -12,6 +12,7 @@
     "start": "next start -p 3002",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "postinstall": "prisma generate",
     "next:dev": "next dev -p 3002 --turbopack",
     "next:build": "next build --turbopack",
     "prisma:generate": "prisma generate",

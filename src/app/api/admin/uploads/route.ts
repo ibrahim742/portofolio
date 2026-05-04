@@ -26,6 +26,10 @@ function isUploadedFile(value: FormDataEntryValue | null): value is File {
   );
 }
 
+function shouldUseDataUrlStorage() {
+  return process.env.UPLOAD_STORAGE === "data-url" || process.env.VERCEL === "1";
+}
+
 export async function POST(request: Request) {
   try {
     const unauthorized = await ensureAdmin();
@@ -56,6 +60,14 @@ export async function POST(request: Request) {
     }
 
     const bytes = Buffer.from(await file.arrayBuffer());
+    const mimeType = file.type || "image/png";
+
+    if (shouldUseDataUrlStorage()) {
+      return NextResponse.json({
+        path: `data:${mimeType};base64,${bytes.toString("base64")}`,
+      });
+    }
+
     const folderValue = String(formData.get("folder") || "projects");
     const folder = allowedFolders.has(folderValue) ? folderValue : "projects";
     const uploadDir = join(process.cwd(), "public", "uploads", folder);

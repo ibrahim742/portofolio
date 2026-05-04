@@ -6,9 +6,9 @@ type ProjectImageProps = {
 };
 
 export function ProjectImage({ src, alt }: ProjectImageProps) {
-  const isExternal = /^https?:\/\//.test(src);
+  const shouldUseImg = /^(https?:|data:image\/)/.test(src);
 
-  if (isExternal) {
+  if (shouldUseImg) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
