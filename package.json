@@ -3,20 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "npm@9.2.0",
-  "workspaces": [
-    "."
-  ],
   "scripts": {
-    "dev": "next dev -p 3002 --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev -p 3002 --turbo",
+    "build": "prisma generate && next build",
     "start": "next start -p 3002",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "postinstall": "prisma generate",
-    "next:dev": "next dev -p 3002 --turbopack",
-    "next:build": "next build --turbopack",
+
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "prisma db seed"
   },
   "dependencies": {
