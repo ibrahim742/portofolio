@@ -1,0 +1,15 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="750" fill="#0B1220"/>
+  <rect x="82" y="74" width="1036" height="602" rx="30" fill="#111A2E" stroke="#263550"/>
+  <rect x="134" y="126" width="932" height="92" rx="22" fill="#0E172A" stroke="#23334E"/>
+  <rect x="134" y="260" width="288" height="300" rx="24" fill="#102A39" stroke="#236577"/>
+  <rect x="456" y="260" width="288" height="300" rx="24" fill="#161E38" stroke="#383C73"/>
+  <rect x="778" y="260" width="288" height="300" rx="24" fill="#102A39" stroke="#236577"/>
+  <path d="M202 436h64l32-82 48 138 34-56h42" stroke="#67E8F9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M524 436h64l42-112 44 154 32-42h38" stroke="#C4B5FD" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M846 436h52l34-68 50 118 34-50h50" stroke="#93C5FD" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="920" cy="172" r="16" fill="#22D3EE"/>
+  <circle cx="970" cy="172" r="16" fill="#34D399"/>
+  <circle cx="1020" cy="172" r="16" fill="#FBBF24"/>
+  <text x="176" y="184" fill="#E5EDF7" font-family="Arial, sans-serif" font-size="34" font-weight="700">Network Monitoring Dashboard</text>
+</svg>

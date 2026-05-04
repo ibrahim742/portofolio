@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model HeroContent {
+  id              String   @id @default(cuid())
+  key             String   @unique @default("main")
+  badge           String
+  name            String
+  headline        String
+  roles           String[]
+  description     String
+  profileImage    String   @default("")
+  profileImageAlt String   @default("")
+  primaryCta      String
+  primaryCtaHref  String   @default("/cv/ibrahim-setiawan-cv.pdf")
+  secondaryCta    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model AboutContent {
+  id          String   @id @default(cuid())
+  key         String   @unique @default("main")
+  eyebrow     String
+  title       String
+  subtitle    String   @default("")
+  description String
+  paragraphs  String[]
+  highlights  String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactContent {
+  id            String   @id @default(cuid())
+  key           String   @unique @default("main")
+  eyebrow       String
+  title         String
+  description   String
+  whatsappLabel String
+  whatsappHref  String
+  emailLabel    String
+  emailHref     String
+  location      String
+  mapHref       String
+  socialLinks   String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SectionContent {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  eyebrow     String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BrandingContent {
+  id           String   @id @default(cuid())
+  key          String   @unique @default("main")
+  headerImage  String   @default("")
+  faviconImage String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SkillCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  icon        String
+  items       String[]
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  icon        String
+  description String
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  icon        String
+  category    String
+  image       String
+  imageAlt    String
+  description String
+  techStack   String[] @default([])
+  liveUrl     String   @default("")
+  sourceUrl   String   @default("")
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model WorkflowStep {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  icon        String
+  description String
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

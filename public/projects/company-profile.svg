@@ -1,0 +1,14 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="750" fill="#0B1220"/>
+  <rect x="86" y="80" width="1028" height="590" rx="30" fill="#111A2E" stroke="#263550"/>
+  <rect x="136" y="126" width="928" height="66" rx="18" fill="#0E172A" stroke="#23334E"/>
+  <rect x="136" y="232" width="454" height="360" rx="26" fill="#102A39" stroke="#236577"/>
+  <rect x="636" y="232" width="428" height="360" rx="26" fill="#161E38" stroke="#383C73"/>
+  <rect x="184" y="300" width="310" height="24" rx="12" fill="#E5EDF7" opacity=".82"/>
+  <rect x="184" y="360" width="346" height="18" rx="9" fill="#93C5FD" opacity=".38"/>
+  <rect x="184" y="410" width="270" height="18" rx="9" fill="#93C5FD" opacity=".28"/>
+  <rect x="184" y="494" width="146" height="46" rx="12" fill="#22D3EE" opacity=".8"/>
+  <circle cx="850" cy="412" r="116" fill="#8B5CF6" opacity=".20"/>
+  <circle cx="850" cy="412" r="68" fill="#22D3EE" opacity=".22"/>
+  <text x="178" y="170" fill="#E5EDF7" font-family="Arial, sans-serif" font-size="30" font-weight="700">Company Profile</text>
+</svg>
