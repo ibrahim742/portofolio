@@ -15,6 +15,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AdminToast } from "@/components/admin/admin-toast";
 import { readJsonResponse } from "@/lib/client-api";
+import { parseImageList, serializeImageList } from "@/lib/images";
 
 type FieldType = "text" | "textarea" | "array" | "image" | "image-list";
 
@@ -96,14 +97,11 @@ export function SingletonEditor({
   }
 
   function getImageList(value: AdminValue) {
-    return String(Array.isArray(value) ? value.join("\n") : value || "")
-      .split(/[\n,|]+/)
-      .map((item) => item.trim())
-      .filter(Boolean);
+    return parseImageList(value);
   }
 
   function setImageList(fieldName: string, images: string[]) {
-    setField(fieldName, images.filter(Boolean).join("\n"));
+    setField(fieldName, serializeImageList(images));
   }
 
   function updateImagePath(fieldName: string, index: number, value: string) {

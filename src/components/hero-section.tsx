@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { heroContent } from "@/data/portfolio";
 import type { HeroContentData } from "@/lib/content";
+import { parseImageList } from "@/lib/images";
 
 type HeroSectionProps = {
   content?: HeroContentData;
@@ -22,13 +23,7 @@ export function HeroSection({ content = heroContent }: HeroSectionProps) {
   const profileImage = content.profileImage;
   const profileImageAlt = content.profileImageAlt || content.name;
   const photoSlides = useMemo(
-    () =>
-      profileImage
-        ? profileImage
-            .split(/[\n,|]+/)
-            .map((image) => image.trim())
-            .filter(Boolean)
-        : [],
+    () => parseImageList(profileImage),
     [profileImage],
   );
 
