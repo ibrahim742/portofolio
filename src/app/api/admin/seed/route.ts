@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore, revalidatePortfolioContent } from "@/lib/cache";
 import { seedDefaultPortfolioContent } from "@/lib/portfolio-seed";
 import { prisma } from "@/lib/prisma";
 
@@ -13,8 +12,9 @@ export async function POST() {
 
   try {
     const result = await seedDefaultPortfolioContent(prisma);
-    console.log("database result after update", result);
-    return NextResponse.json({ ok: true, result });
+    revalidatePortfolioContent();
+
+    return jsonNoStore({ ok: true, result });
   } catch (error) {
     return handleApiError(error);
   }

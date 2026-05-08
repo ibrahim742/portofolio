@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore, revalidatePortfolioContent } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import { createSlug } from "@/lib/slug";
 import { serviceSchema } from "@/lib/validations";
@@ -18,10 +17,9 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const { id } = await context.params;
   const data = await prisma.service.findUnique({ where: { id } });
-  console.log("data fetched after refresh", data);
-  if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!data) return jsonNoStore({ error: "Not found" }, { status: 404 });
 
-  return NextResponse.json(data);
+  return jsonNoStore(data);
 }
 
 export async function PUT(request: Request, context: RouteContext) {
@@ -38,9 +36,9 @@ export async function PUT(request: Request, context: RouteContext) {
       where: { id },
       data: { ...parsed, slug },
     });
-    console.log("database result after update", saved);
+    revalidatePortfolioContent();
 
-    return NextResponse.json(saved);
+    return jsonNoStore(saved);
   } catch (error) {
     return handleApiError(error);
   }
@@ -54,6 +52,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   const { id } = await context.params;
   const deleted = await prisma.service.delete({ where: { id } });
-  console.log("database result after update", deleted);
-  return NextResponse.json({ ok: true });
+  revalidatePortfolioContent();
+  return jsonNoStore({ ok: true, deleted });
 }

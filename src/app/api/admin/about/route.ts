@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-
 import { defaultPortfolioContent } from "@/data/portfolio";
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore, revalidatePortfolioContent } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import { aboutSchema } from "@/lib/validations";
 
@@ -16,8 +15,7 @@ export async function GET() {
     const data = await prisma.aboutContent.findUnique({
       where: { key: "main" },
     });
-    console.log("data fetched after refresh", data);
-    return NextResponse.json(data ?? defaultPortfolioContent.about);
+    return jsonNoStore(data ?? defaultPortfolioContent.about);
   } catch (error) {
     return handleApiError(error);
   }
@@ -36,9 +34,9 @@ export async function PUT(request: Request) {
       create: { key: "main", ...data },
       update: data,
     });
-    console.log("database result after update", saved);
+    revalidatePortfolioContent();
 
-    return NextResponse.json(saved);
+    return jsonNoStore(saved);
   } catch (error) {
     return handleApiError(error);
   }

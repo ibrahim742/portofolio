@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore, revalidatePortfolioContent } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import { createSlug } from "@/lib/slug";
 import { skillSchema } from "@/lib/validations";
@@ -15,8 +14,7 @@ export async function GET() {
   const data = await prisma.skillCategory.findMany({
     orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
   });
-  console.log("data fetched after refresh", data);
-  return NextResponse.json(data);
+  return jsonNoStore(data);
 }
 
 export async function POST(request: Request) {
@@ -33,9 +31,9 @@ export async function POST(request: Request) {
       create: { ...parsed, slug },
       update: { ...parsed, slug },
     });
-    console.log("database result after update", saved);
+    revalidatePortfolioContent();
 
-    return NextResponse.json(saved);
+    return jsonNoStore(saved);
   } catch (error) {
     return handleApiError(error);
   }

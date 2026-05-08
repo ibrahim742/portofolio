@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from "fs/promises";
 import { extname, join } from "path";
-import { NextResponse } from "next/server";
 
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore } from "@/lib/cache";
 import { createSlug } from "@/lib/slug";
 
 const allowedTypes = new Set([
@@ -39,21 +39,21 @@ export async function POST(request: Request) {
     const file = formData.get("file");
 
     if (!isUploadedFile(file)) {
-      return NextResponse.json(
+      return jsonNoStore(
         { error: "File tidak ditemukan." },
         { status: 422 },
       );
     }
 
     if (!allowedTypes.has(file.type)) {
-      return NextResponse.json(
+      return jsonNoStore(
         { error: "Format gambar tidak didukung." },
         { status: 422 },
       );
     }
 
     if (file.size > maxFileSize) {
-      return NextResponse.json(
+      return jsonNoStore(
         { error: "Ukuran gambar maksimal 5 MB." },
         { status: 422 },
       );
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     const mimeType = file.type || "image/png";
 
     if (shouldUseDataUrlStorage()) {
-      return NextResponse.json({
+      return jsonNoStore({
         path: `data:${mimeType};base64,${bytes.toString("base64")}`,
       });
     }
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
     await mkdir(uploadDir, { recursive: true });
     await writeFile(join(uploadDir, fileName), bytes);
 
-    return NextResponse.json({ path: `/uploads/${folder}/${fileName}` });
+    return jsonNoStore({ path: `/uploads/${folder}/${fileName}` });
   } catch (error) {
     return handleApiError(error);
   }

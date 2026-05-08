@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { markAsDynamic } from "@/lib/cache";
 
 export type BrandingContentData = {
   headerImage: string;
@@ -11,6 +12,8 @@ export const defaultBrandingContent: BrandingContentData = {
 };
 
 export async function getBrandingContent(): Promise<BrandingContentData> {
+  markAsDynamic();
+
   try {
     const branding = await prisma.brandingContent.findUnique({
       where: { key: "main" },

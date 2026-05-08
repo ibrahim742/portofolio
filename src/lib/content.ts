@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { defaultPortfolioContent } from "@/data/portfolio";
+import { markAsDynamic } from "@/lib/cache";
 import {
   defaultBrandingContent,
   type BrandingContentData,
@@ -116,6 +117,8 @@ const fallbackContent: PortfolioContent = {
 };
 
 export async function getPortfolioContent(): Promise<PortfolioContent> {
+  markAsDynamic();
+
   try {
     const [
       branding,

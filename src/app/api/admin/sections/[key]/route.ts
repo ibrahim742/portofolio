@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-
 import { defaultPortfolioContent } from "@/data/portfolio";
 import { ensureAdmin, handleApiError } from "@/lib/api";
+import { jsonNoStore, revalidatePortfolioContent } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import { sectionSchema } from "@/lib/validations";
 
@@ -26,11 +25,10 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const { key: rawKey } = await context.params;
   const key = parseSectionKey(rawKey);
-  if (!key) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!key) return jsonNoStore({ error: "Not found" }, { status: 404 });
 
   const data = await prisma.sectionContent.findUnique({ where: { key } });
-  console.log("data fetched after refresh", data);
-  return NextResponse.json(data ?? defaultPortfolioContent.sections[key]);
+  return jsonNoStore(data ?? defaultPortfolioContent.sections[key]);
 }
 
 export async function PUT(request: Request, context: RouteContext) {
@@ -40,7 +38,7 @@ export async function PUT(request: Request, context: RouteContext) {
   try {
     const { key: rawKey } = await context.params;
     const key = parseSectionKey(rawKey);
-    if (!key) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!key) return jsonNoStore({ error: "Not found" }, { status: 404 });
 
     const payload = await request.json();
     console.log("payload save", payload);
@@ -50,9 +48,9 @@ export async function PUT(request: Request, context: RouteContext) {
       create: { key, ...data },
       update: data,
     });
-    console.log("database result after update", saved);
+    revalidatePortfolioContent();
 
-    return NextResponse.json(saved);
+    return jsonNoStore(saved);
   } catch (error) {
     return handleApiError(error);
   }

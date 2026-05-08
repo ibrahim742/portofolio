@@ -62,10 +62,10 @@ function getIcon(icon: string) {
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export default async function Home() {
   const content = await getPortfolioContent();
-  console.log("data fetched after refresh", content);
 
   return (
     <main className="min-h-screen overflow-hidden bg-surface text-ink">
